@@ -51,7 +51,7 @@ async function runTests() {
         console.log(await calRes.json());
 
         // 5. Protected Query (AI Advice)
-        // NOTE: This will fail if no actual OpenAI key is in .env
+        // NOTE: This will fail if no actual Groq key is in .env
         console.log('\n--- Testing Protected AI Query (Unauthorized) ---');
         const queryFailRes = await fetch(`${BASE_URL}/api/query`, { method: 'POST' });
         console.log('Query (No Token) Status:', queryFailRes.status);

@@ -1,7 +1,7 @@
-const OpenAI = require('openai');
+const Groq = require('groq-sdk');
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+const groq = new Groq({
+    apiKey: process.env.GROQ_API,
 });
 
 exports.getQueryAdvice = async (req, res) => {
@@ -23,8 +23,8 @@ exports.getQueryAdvice = async (req, res) => {
             }
         ];
 
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
+        const response = await groq.chat.completions.create({
+            model: "llama-3.3-70b-versatile",
             messages: messages,
             max_tokens: 500,
         });
@@ -36,10 +36,10 @@ exports.getQueryAdvice = async (req, res) => {
     } catch (error) {
         console.error(error);
 
-        // Handle OpenAI Quota Error gracefully
+        // Handle Groq Quota Error gracefully
         if (error.status === 429 || error.code === 'insufficient_quota') {
             return res.json({
-                advice: "ക്ഷമിക്കണം, ഇപ്പോൾ ഉപദേശങ്ങൾ നൽകാൻ കഴിയില്ല (OpenAI Quota Exceeded). ദയവായി നിങ്ങളുടെ ബില്ലിംഗ് വിവരങ്ങൾ പരിശോധിക്കുക. (Fallback: നിങ്ങളുടെ തെങ്ങിന് നനയ്ക്കുന്നത് തുടരുക, പുതയിടുക.)",
+                advice: "ക്ഷമിക്കണം, ഇപ്പോൾ ഉപദേശങ്ങൾ നൽകാൻ കഴിയില്ല (Groq Quota Exceeded). ദയവായി നിങ്ങളുടെ ബില്ലിംഗ് വിവരങ്ങൾ പരിശോധിക്കുക. (Fallback: നിങ്ങളുടെ തെങ്ങിന് നനയ്ക്കുന്നത് തുടരുക, പുതയിടുക.)",
                 imageUrl: imageUrl,
                 status: "mock_fallback"
             });
