@@ -9,6 +9,16 @@ const mockPrices = {
     pepper: "₹500/kg"
 };
 
+// Return all prices
+router.get('/', (req, res) => {
+    const allPrices = Object.entries(mockPrices).map(([crop, price]) => ({
+        crop,
+        price,
+        date: new Date().toISOString()
+    }));
+    res.json(allPrices);
+});
+
 router.get('/:crop', (req, res) => {
     const crop = req.params.crop.toLowerCase();
     const price = mockPrices[crop];
