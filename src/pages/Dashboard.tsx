@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { io } from 'socket.io-client';
-import { CloudSun, TrendingUp, TrendingDown, MessageSquare, Calendar, Bell, AlertTriangle } from 'lucide-react';
+import { CloudSun, TrendingUp, TrendingDown, MessageSquare, Bell, AlertTriangle, Cloud, CloudRain, Sun, Wind, Droplets, Thermometer } from 'lucide-react';
 import { getAllPrices } from '../lib/api';
 
 interface PriceItem {
@@ -88,34 +88,93 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Weather Widget */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 md:col-span-1">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <div className="text-sm font-medium text-slate-500 dark:text-slate-400">{userDistrict}, Kerala</div>
-              <div className="text-4xl font-bold text-slate-900 dark:text-white mt-1">32°C</div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Expanded Weather Hub */}
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 lg:col-span-3">
+          <div className="flex flex-col md:flex-row justify-between gap-8">
+            {/* Current Weather */}
+            <div className="flex-1">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <div className="text-sm font-bold text-primary uppercase tracking-widest mb-1">Current Weather</div>
+                  <div className="text-2xl font-bold text-slate-900 dark:text-white">{userDistrict}, {user.state || 'India'}</div>
+                  <div className="flex items-center gap-4 mt-2">
+                    <div className="text-5xl font-extrabold text-slate-900 dark:text-white">32°C</div>
+                    <div className="h-12 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+                    <div>
+                      <div className="text-lg font-bold text-slate-800 dark:text-slate-200">Mostly Sunny</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">Feels like 34°C</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-amber-100 dark:bg-amber-900/30 p-4 rounded-3xl">
+                  <CloudSun size={48} className="text-amber-500" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="p-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+                  <Droplets size={18} className="text-blue-500" />
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase">Humidity</div>
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">65%</div>
+                  </div>
+                </div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+                  <Wind size={18} className="text-slate-500" />
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase">Wind</div>
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">12 km/h</div>
+                  </div>
+                </div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+                  <CloudRain size={18} className="text-primary" />
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase">Precip</div>
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">10%</div>
+                   </div>
+                </div>
+                <div className="p-3 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+                  <Thermometer size={18} className="text-red-500" />
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase">UV Index</div>
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">High</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <CloudSun size={40} className="text-amber-500" />
-          </div>
-          <div className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Mostly Sunny</div>
-          <div className="grid grid-cols-2 gap-2 text-xs text-slate-500 dark:text-slate-400">
-            <div>Humidity: <span className="font-medium text-slate-700 dark:text-slate-200">65%</span></div>
-            <div>Wind: <span className="font-medium text-slate-700 dark:text-slate-200">12 km/h</span></div>
-            <div>Precip: <span className="font-medium text-slate-700 dark:text-slate-200">10%</span></div>
-            <div>UV Index: <span className="font-medium text-slate-700 dark:text-slate-200">High</span></div>
+
+            {/* 5-Day Forecast */}
+            <div className="flex-1 bg-slate-50 dark:bg-slate-900/20 p-4 rounded-3xl border border-slate-100 dark:border-slate-700">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">5-Day Forecast</h3>
+              <div className="grid grid-cols-5 gap-2">
+                {[
+                  { day: 'Thu', temp: 31, icon: <Sun className="text-amber-500" /> },
+                  { day: 'Fri', temp: 29, icon: <CloudSun className="text-amber-500" /> },
+                  { day: 'Sat', temp: 28, icon: <CloudRain className="text-blue-500" /> },
+                  { day: 'Sun', temp: 30, icon: <Sun className="text-amber-500" /> },
+                  { day: 'Mon', temp: 32, icon: <Cloud className="text-slate-400" /> },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex flex-col items-center p-2 hover:bg-white dark:hover:bg-slate-800 rounded-2xl transition-all cursor-default">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase mb-2">{item.day}</span>
+                    <div className="mb-2">{item.icon}</div>
+                    <span className="text-sm font-bold text-slate-900 dark:text-white">{item.temp}°</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Live Prices Summary */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 md:col-span-2">
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 lg:col-span-3">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <TrendingUp size={20} className="text-primary" /> Live Mandi Prices
             </h2>
             <Link to="/market-prices" className="text-sm font-semibold text-primary hover:underline">View All</Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4">
             {prices.map((item) => (
               <div key={item.name} className="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-100 dark:border-slate-700">
                 <div className="text-xs font-medium text-slate-500 dark:text-slate-300 truncate">{item.name}</div>
@@ -133,18 +192,6 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Quick Actions & Alerts */}
         <div className="md:col-span-2 space-y-6">
-          {/* Quick AI Chat Banner */}
-          <div className="bg-gradient-to-r from-green-600 to-green-700 p-6 rounded-2xl shadow-md text-white flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-              <h3 className="text-xl font-bold flex items-center gap-2">
-                <MessageSquare size={24} /> Quick AI Assistant
-              </h3>
-              <p className="text-green-100 text-sm mt-1">Upload a crop photo for instant disease diagnosis.</p>
-            </div>
-            <Link to="/ai-chat" className="px-6 py-2 bg-white text-green-700 font-bold rounded-lg shadow-sm hover:bg-green-50 transition-colors whitespace-nowrap">
-              Ask AI Now
-            </Link>
-          </div>
 
           {/* Alerts */}
           <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
@@ -160,41 +207,48 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-900/40">
-                <Calendar className="text-blue-600 shrink-0 mt-0.5" size={18} />
+                <MessageSquare className="text-blue-600 shrink-0 mt-0.5" size={18} />
                 <div>
-                  <div className="text-sm font-semibold text-blue-800 dark:text-blue-200">Ninjate Season</div>
-                  <p className="text-xs text-blue-700 dark:text-blue-300/80">Ideal time for sowing paddy (Mundakan season) approaches. Check calendar.</p>
+                  <div className="text-sm font-semibold text-blue-800 dark:text-blue-200">Agri Advisor</div>
+                  <p className="text-xs text-blue-700 dark:text-blue-300/80">Ideal time for sowing paddy approaches in your region. Check our latest AI recommendations.</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Calendar Preview / Quick Links */}
+        {/* Financial Summary & Quick Links */}
         <div className="space-y-6">
           <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Calendar size={20} className="text-primary" /> Upcoming Tasks
+                <TrendingUp size={20} className="text-primary" /> Financial Overview
               </h2>
-              <Link to="/calendar" className="text-sm font-semibold text-primary hover:underline">Open</Link>
+              <Link to="/ledger" className="text-sm font-semibold text-primary hover:underline">Open Ledger</Link>
             </div>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  <span className="text-sm text-slate-700 dark:text-slate-200">Fertilizer Application</span>
-                </div>
-                <span className="text-xs text-slate-500">Today</span>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/10 rounded-xl">
+                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Total Income</span>
+                <span className="text-sm font-bold text-green-600 dark:text-green-400">₹45,200</span>
               </div>
-              <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  <span className="text-sm text-slate-700 dark:text-slate-200">Watering Schedule</span>
-                </div>
-                <span className="text-xs text-slate-500">Mar 19</span>
+              <div className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-900/10 rounded-xl">
+                <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Total Expenses</span>
+                <span className="text-sm font-bold text-red-600 dark:text-red-400">₹12,800</span>
               </div>
             </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-primary to-green-700 p-6 rounded-2xl text-white shadow-lg overflow-hidden relative group">
+            <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+              <CloudSun size={120} />
+            </div>
+            <h3 className="font-bold text-lg">Smart Advisor</h3>
+            <p className="text-xs text-green-100 mt-2 leading-relaxed">
+              Based on your location and crop choice, now is the ideal time to apply organic fertilizers.
+            </p>
+            <button className="mt-4 text-xs font-bold bg-white text-primary px-4 py-2 rounded-lg shadow-sm hover:bg-green-50">
+              Get Recommendation
+            </button>
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Send, Mic, Image as ImageIcon, Sparkles, User, Bot, Loader2 } from 'lucide-react';
+import { Send, Mic, Image as ImageIcon, User, Bot, Loader2, History, AlertCircle } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-hot-toast';
-import api from '../lib/api';
+import api, { getScans, saveScan } from '../lib/api';
 
 interface Message {
   id: string;
@@ -14,37 +14,59 @@ interface Message {
 
 export default function AIChat() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [user] = useState<any>(JSON.parse(localStorage.getItem('user') || '{}'));
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [scans, setScans] = useState<any[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Load chat history from localStorage
-    const history = localStorage.getItem('chat_history');
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const storageKey = storedUser.id ? `chat_history_${storedUser.id}` : 'chat_history';
+    const history = localStorage.getItem(storageKey);
+    
     if (history) {
       setMessages(JSON.parse(history).map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) })));
     } else {
       // Initial welcome message
+      const userLang = storedUser.language || 'english';
+      const welcomeText = userLang === 'hindi' 
+        ? `नमस्ते ${storedUser.name || 'किसान'}! मैं Farm-Ed AI हूँ, आपका कृषि सलाहकार। आप ${storedUser.district || 'भारत'}, ${storedUser.state || ''} से हैं। मैं आपकी कैसे मदद कर सकता हूँ?`
+        : `Hello ${storedUser.name || 'Farmer'}! I am Farm-Ed AI, your agricultural advisor from ${storedUser.district || 'India'}, ${storedUser.state || ''}. How can I assist you today?`;
+        
       setMessages([
         {
           id: '1',
           sender: 'ai',
-          text: 'Hello! I am your AI Farm Assistant. How can I help you today? You can ask in English or Malayalam.',
+          text: welcomeText,
           timestamp: new Date(),
         },
       ]);
     }
+    fetchScans();
   }, []);
+
+  const fetchScans = async () => {
+    try {
+      const { data } = await getScans();
+      setScans(data);
+    } catch (err) {
+      console.error('Failed to fetch scans');
+    }
+  };
 
   useEffect(() => {
     // Save to localStorage
     if (messages.length > 0) {
-      localStorage.setItem('chat_history', JSON.stringify(messages));
+      const storageKey = user.id ? `chat_history_${user.id}` : 'chat_history';
+      localStorage.setItem(storageKey, JSON.stringify(messages));
     }
     // Scroll to bottom
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, user.id]);
 
   // Dropzone setup for images
   const onDrop = (acceptedFiles: File[]) => {
@@ -80,7 +102,6 @@ export default function AIChat() {
     setIsTyping(true);
 
     try {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const formData = new FormData();
       formData.append('question', text || 'Analyze this image');
       formData.append('district', user.district || 'Kerala');
@@ -103,6 +124,17 @@ export default function AIChat() {
       };
 
       setMessages((prev) => [...prev, aiMessage]);
+
+      // If there was an image, save it as a scan
+      if (image) {
+        await saveScan({
+          imageUrl: image,
+          diagnosis: data.advice.split('.')[0] || 'Analysis complete',
+          recommendation: data.advice.substring(0, 100) + '...',
+          status: 'detected'
+        });
+        fetchScans();
+      }
     } catch (error: any) {
       toast.error('AI assistant is currently unavailable.');
       console.error(error);
@@ -133,12 +165,42 @@ export default function AIChat() {
       <input {...getInputProps()} />
       {/* Header */}
       <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50">
-        <Sparkles size={24} className="text-primary" />
-        <div>
+        <div className="flex-1">
           <h1 className="text-lg font-bold text-slate-900 dark:text-white">AI Farm Advisor</h1>
           <p className="text-xs text-slate-500 dark:text-slate-400">Online | Supports Voice & Image</p>
         </div>
+        <button 
+          onClick={() => setShowHistory(!showHistory)}
+          className={`p-2 rounded-xl transition-colors ${showHistory ? 'bg-primary text-white' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+          title="Recent Scans"
+        >
+          <History size={20} />
+        </button>
       </div>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* History Sidebar (Desktop) */}
+        {showHistory && (
+          <div className="w-64 border-r border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/20 overflow-y-auto hidden md:block">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Recent Scans</h3>
+              <AlertCircle size={14} className="text-slate-300" />
+            </div>
+            <div className="p-2 space-y-2">
+              {scans.length === 0 ? (
+                <div className="p-4 text-center text-xs text-slate-400">No scans yet. Upload a photo to start!</div>
+              ) : (
+                scans.map((scan) => (
+                  <div key={scan._id} className="p-2 rounded-xl hover:bg-white dark:hover:bg-slate-800 border border-transparent hover:border-slate-100 dark:hover:border-slate-700 transition-all cursor-pointer group">
+                    <img src={scan.imageUrl} className="w-full h-24 object-cover rounded-lg mb-2" alt="Scan" />
+                    <div className="text-[11px] font-bold text-slate-700 dark:text-slate-200 truncate">{scan.diagnosis}</div>
+                    <div className="text-[9px] text-slate-400 mt-1">{new Date(scan.createdAt).toLocaleDateString()}</div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
 
       {/* Messages List */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -173,6 +235,7 @@ export default function AIChat() {
         )}
         <div ref={messagesEndRef} />
       </div>
+      </div>
 
       {/* Input Area */}
       <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
@@ -204,7 +267,7 @@ export default function AIChat() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask AI or check symptoms..."
+            placeholder={user.language === 'hindi' ? "एआई से पूछें या लक्षणों की जांच करें..." : "Ask AI or check symptoms..."}
             className="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 rounded-xl outline-none text-sm text-slate-900 dark:text-white"
           />
           <button

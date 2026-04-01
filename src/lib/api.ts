@@ -17,10 +17,13 @@ api.interceptors.request.use((config) => {
 export const loginUser = (phone: string, password: string) =>
   api.post('/auth/login', { phone, password });
 
-export const registerUser = (data: { name: string; phone: string; district: string; password: string }) =>
+export const registerUser = (data: { name: string; phone: string; district: string; password: string; language?: string }) =>
   api.post('/auth/register', data);
 
 export const getMe = () => api.get('/auth/me');
+
+export const updateProfile = (data: { language: string }) =>
+  api.put('/auth/profile', data);
 
 // ── AI Query ──
 export const sendQuery = (formData: FormData) =>
@@ -32,7 +35,13 @@ export const sendQuery = (formData: FormData) =>
 export const getAllPrices = () => api.get('/prices');
 export const getCropPrice = (crop: string) => api.get(`/prices/${crop}`);
 
-// ── Calendar ──
-export const getCalendar = (district: string) => api.get(`/calendar/${district}`);
+// ── Ledger ──
+export const getLedger = () => api.get('/ledger');
+export const addLedgerEntry = (data: any) => api.post('/ledger', data);
+export const deleteLedgerEntry = (id: string) => api.delete(`/ledger/${id}`);
+
+// ── Scans ──
+export const getScans = () => api.get('/scan');
+export const saveScan = (data: any) => api.post('/scan', data);
 
 export default api;

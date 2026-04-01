@@ -12,7 +12,9 @@ export default function Register() {
       name: '',
       phone: '',
       district: '',
+      state: '',
       password: '',
+      language: 'english',
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -23,9 +25,13 @@ export default function Register() {
         .required('Phone number is required'),
       district: Yup.string()
         .required('District is required'),
+      state: Yup.string()
+        .required('State is required'),
       password: Yup.string()
         .min(6, 'Password must be at least 6 characters')
         .required('Password is required'),
+      language: Yup.string()
+        .required('Language is required'),
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -47,7 +53,7 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 px-4">
       <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-slate-200 dark:border-slate-700">
         <div className="text-center mb-8">
-          <Link to="/" className="text-3xl font-bold text-primary">🌱 Kerala Farm</Link>
+          <Link to="/" className="text-3xl font-bold text-primary">🌱 Farm-Ed</Link>
           <h2 className="text-xl font-semibold mt-4 text-slate-900 dark:text-white">Create Account</h2>
           <p className="text-slate-500 dark:text-slate-400 text-sm">Join the farming community</p>
         </div>
@@ -90,25 +96,70 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">District</label>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">State</label>
             <select
+              name="state"
+              value={formik.values.state}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none ${
+                formik.touched.state && formik.errors.state ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'
+              }`}
+            >
+              <option value="" disabled>Select State</option>
+              {["Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"].map(state => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+            {formik.touched.state && formik.errors.state && (
+              <p className="text-red-500 text-xs mt-1">{formik.errors.state}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">District</label>
+            <input
+              type="text"
               name="district"
               value={formik.values.district}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              placeholder="Enter your district"
               className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none ${
                 formik.touched.district && formik.errors.district ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'
               }`}
-            >
-              <option value="" disabled>Select District</option>
-              <option value="Ernakulam">Ernakulam</option>
-              <option value="Thrissur">Thrissur</option>
-              <option value="Idukki">Idukki</option>
-              <option value="Palakkad">Palakkad</option>
-            </select>
+            />
             {formik.touched.district && formik.errors.district && (
               <p className="text-red-500 text-xs mt-1">{formik.errors.district}</p>
             )}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Preferred Language</label>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => formik.setFieldValue('language', 'english')}
+                className={`py-2 px-4 rounded-lg border text-sm font-medium transition-all ${
+                  formik.values.language === 'english'
+                    ? 'bg-primary text-white border-primary shadow-md'
+                    : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-primary'
+                }`}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                onClick={() => formik.setFieldValue('language', 'hindi')}
+                className={`py-2 px-4 rounded-lg border text-sm font-medium transition-all ${
+                  formik.values.language === 'hindi'
+                    ? 'bg-primary text-white border-primary shadow-md'
+                    : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-primary'
+                }`}
+              >
+                हिन्दी
+              </button>
+            </div>
           </div>
 
           <div>

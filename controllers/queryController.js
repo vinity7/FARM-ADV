@@ -9,15 +9,22 @@ exports.getQueryAdvice = async (req, res) => {
     const imageUrl = req.file ? req.file.path : null;
 
     try {
+        const user = req.user;
+        const language = user.language === 'hindi' ? 'Hindi' : 'English';
+        
         const messages = [
             {
                 role: "system",
-                content: "You are an expert agricultural advisor for farmers in Kerala, India. Provide advice strictly in Malayalam. Focus on local crops like paddy, coconut, banana, and tapioca. If an image is provided, analyze it for pests or diseases."
+                content: `You are an expert agricultural advisor named "Farm-Ed AI" helping a farmer named ${user.name} from ${user.district}, ${user.state}, India. 
+                You MUST provide advice strictly in ${language}. 
+                Provide guidance on crops relevant to their specific region (e.g., wheat, rice, cotton, sugarcane, pulses, fruits, or vegetables common in ${user.state}). 
+                Keep your tone helpful, professional, and personalized. 
+                If an image is provided, analyze it for pests or diseases.`
             },
             {
                 role: "user",
                 content: [
-                    { type: "text", text: `Question: ${question}. District: ${district}.` },
+                    { type: "text", text: `Question: ${question}.` },
                     ...(imageUrl ? [{ type: "image_url", image_url: { url: imageUrl } }] : [])
                 ]
             }

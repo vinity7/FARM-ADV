@@ -6,7 +6,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import MarketPrices from './pages/MarketPrices';
 import AIChat from './pages/AIChat';
-import CropCalendar from './pages/CropCalendar';
+import Ledger from './pages/Ledger';
 import SuppliersMap from './pages/SuppliersMap';
 import Profile from './pages/Profile';
 import { Toaster } from 'react-hot-toast';
@@ -66,11 +66,11 @@ function App() {
           }
         />
         <Route
-          path="/calendar"
+          path="/ledger"
           element={
             <ProtectedRoute>
               <Layout>
-                <CropCalendar />
+                <Ledger />
               </Layout>
             </ProtectedRoute>
           }
