@@ -49,10 +49,10 @@ app.use((req, res, next) => {
         next();
     }
 });
-    app.get('/', (req, res) => {
-        res.send('API is running...');
-    });
-}
+
+app.get('/', (req, res) => {
+    res.send('API is running...');
+});
 
 // Socket.io Real-time Updates
 io.on('connection', (socket) => {
