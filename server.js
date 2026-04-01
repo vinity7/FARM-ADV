@@ -41,13 +41,14 @@ app.use('/api/prices', require('./routes/market'));
 app.use('/api/ledger', require('./routes/ledger'));
 app.use('/api/scan', require('./routes/scan'));
 
-// Serve Static Assets in Production
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'dist')));
-    app.get('/:splat*', (req, res) => {
+// Catch-all to serve index.html for any non-API routes in production
+app.use((req, res, next) => {
+    if (process.env.NODE_ENV === 'production' && !req.path.startsWith('/api')) {
         res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-    });
-} else {
+    } else {
+        next();
+    }
+});
     app.get('/', (req, res) => {
         res.send('API is running...');
     });
