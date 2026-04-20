@@ -4,7 +4,6 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import MarketPrices from './pages/MarketPrices';
 import AIChat from './pages/AIChat';
 import Ledger from './pages/Ledger';
 import SuppliersMap from './pages/SuppliersMap';
@@ -41,16 +40,6 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <Dashboard />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/market-prices"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <MarketPrices />
               </Layout>
             </ProtectedRoute>
           }

@@ -32,10 +32,9 @@ export default function Layout({ children }: LayoutProps) {
 
   const navItems = [
     { to: '/dashboard', icon: <LayoutDashboard size={24} />, label: 'Dashboard' },
-    { to: '/market-prices', icon: <TrendingUp size={24} />, label: 'Market' },
     { to: '/ai-chat', icon: <MessageSquare size={24} />, label: 'AI Chat' },
     { to: '/ledger', icon: <TrendingUp size={24} />, label: 'Ledger' },
-    { to: '/suppliers', icon: <MapPin size={24} />, label: 'Suppliers' },
+    { to: '/suppliers', icon: <MapPin size={24} />, label: 'Equipment Rental' },
     { to: '/profile', icon: <User size={24} />, label: 'Profile' },
   ];
 

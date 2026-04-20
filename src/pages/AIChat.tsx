@@ -104,7 +104,7 @@ export default function AIChat() {
     try {
       const formData = new FormData();
       formData.append('question', text || 'Analyze this image');
-      formData.append('district', user.district || 'Kerala');
+      formData.append('district', user.district || 'Maharashtra');
       
       if (image) {
         const response = await fetch(image);
@@ -153,7 +153,7 @@ export default function AIChat() {
       toast.success('Listening... [Speak in Malayalam/English]');
       // In real implementation: Setup SpeechRecognition and append transcript to input
       setTimeout(() => {
-        setInput('കുരുമുളക് ചെടിക്ക് എന്താണ് വളം വേണ്ടത്?'); // Mock Malayalam input
+        setInput('ऊस शेतीसाठी कोणते खत वापरावे?'); // Mock Marathi input
         setIsListening(false);
         toast.success('Speech captured!');
       }, 3000);

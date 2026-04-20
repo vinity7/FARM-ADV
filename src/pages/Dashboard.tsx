@@ -1,78 +1,13 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { io } from 'socket.io-client';
-import { CloudSun, TrendingUp, TrendingDown, MessageSquare, Bell, AlertTriangle, Cloud, CloudRain, Sun, Wind, Droplets, Thermometer } from 'lucide-react';
-import { getAllPrices } from '../lib/api';
+import { CloudSun, MessageSquare, Bell, AlertTriangle, Cloud, CloudRain, Sun, Wind, Droplets, Thermometer, TrendingUp } from 'lucide-react';
 
-interface PriceItem {
-  name: string;
-  price: number;
-  change: number;
-  unit: string;
-}
 
 export default function Dashboard() {
-  const [prices, setPrices] = useState<PriceItem[]>([
-    { name: 'Rice', price: 45.0, change: 0, unit: 'kg' },
-    { name: 'Coconut', price: 25.0, change: 0, unit: 'piece' },
-    { name: 'Tapioca', price: 30.0, change: 0, unit: 'kg' },
-    { name: 'Banana', price: 30.0, change: 0, unit: 'kg' },
-  ]);
-
   // Get the logged-in user's name
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const userName = user.name || 'Farmer';
-  const userDistrict = user.district || 'Kerala';
+  const userDistrict = user.district || 'Pune';
 
-  // Initial fetch for prices
-  useEffect(() => {
-    const fetchInitialPrices = async () => {
-      try {
-        const { data } = await getAllPrices();
-        // data: [{ crop: 'rice', price: '₹45/kg', date: '...' }]
-        setPrices((prev) =>
-          prev.map((item) => {
-            const match = data.find((d: any) => d.crop.toLowerCase() === item.name.toLowerCase());
-            if (match) {
-              const numericPrice = parseFloat(match.price.replace(/[₹/kgpiece]/g, ''));
-              return { ...item, price: numericPrice };
-            }
-            return item;
-          })
-        );
-      } catch (err) {
-        console.error('Failed to fetch initial prices:', err);
-      }
-    };
-    fetchInitialPrices();
-  }, []);
-
-  // Connect to Socket.io for live price updates
-  useEffect(() => {
-    const socket = io(window.location.origin, { path: '/socket.io' });
-
-    socket.on('priceUpdate', (updates: { crop: string; price: string }[]) => {
-      setPrices((prev) =>
-        prev.map((item) => {
-          const match = updates.find(
-            (u) => item.name.toLowerCase().includes(u.crop.toLowerCase())
-          );
-          if (match) {
-            const numericPrice = parseFloat(match.price.replace(/[₹/kgpiece]/g, ''));
-            if (!isNaN(numericPrice)) {
-              const change = parseFloat((((numericPrice - item.price) / item.price) * 100).toFixed(1));
-              return { ...item, price: numericPrice, change };
-            }
-          }
-          return item;
-        })
-      );
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   return (
     <div className="space-y-6">
@@ -166,27 +101,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Live Prices Summary */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 lg:col-span-3">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <TrendingUp size={20} className="text-primary" /> Live Mandi Prices
-            </h2>
-            <Link to="/market-prices" className="text-sm font-semibold text-primary hover:underline">View All</Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4">
-            {prices.map((item) => (
-              <div key={item.name} className="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-100 dark:border-slate-700">
-                <div className="text-xs font-medium text-slate-500 dark:text-slate-300 truncate">{item.name}</div>
-                <div className="text-lg font-bold text-slate-900 dark:text-white mt-1">₹{item.price}<span className="text-xs font-normal">/{item.unit}</span></div>
-                <div className={`flex items-center gap-1 text-xs font-semibold mt-1 ${item.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {item.change >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-                  {Math.abs(item.change)}%
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -203,7 +117,7 @@ export default function Dashboard() {
                 <AlertTriangle className="text-amber-600 shrink-0 mt-0.5" size={18} />
                 <div>
                   <div className="text-sm font-semibold text-amber-800 dark:text-amber-200">Weather Alert</div>
-                  <p className="text-xs text-amber-700 dark:text-amber-300/80">Heavy rainfall isolated in {userDistrict} starting tomorrow. Secure your harvest.</p>
+                  <p className="text-xs text-amber-700 dark:text-amber-300/80">Unseasonal rain expected in {userDistrict} next week. Cover your crops.</p>
                 </div>
               </div>
               <div className="flex gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-900/40">

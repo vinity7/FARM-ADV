@@ -7,10 +7,10 @@ export default function Landing() {
       <section className="px-4 py-20 text-center bg-gradient-to-b from-green-50 to-white dark:from-green-950 dark:to-slate-900">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
-            Empowering Kerala's Farmers with <span className="text-primary">Smart AI</span>
+            Empowering Maharashtra's Farmers with <span className="text-primary">Smart AI</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
-            Get live mandi prices, crop disease diagnosis, and expert agricultural advice at your fingertips.
+            Get crop disease diagnosis, integrated crop calendars, and expert agricultural advice at your fingertips.
           </p>
           
           {/* Stats */}

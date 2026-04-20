@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Phone, MapPin, ShoppingCart, Star, Clock, Package, X, ExternalLink } from 'lucide-react';
+import { Phone, MapPin, Truck, Star, Clock, Package, X, ExternalLink } from 'lucide-react';
 import L from 'leaflet';
 
 // Fix for missing marker icons in React Leaflet
@@ -18,107 +18,122 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const shops = [
   { 
     id: 1, 
-    name: 'Kisan Agri Services', 
-    lat: 26.9124, 
-    lng: 75.7873, 
-    address: 'Jaipur, Rajasthan', 
+    name: 'Pune Agri-Rental Hub', 
+    lat: 18.5204, 
+    lng: 73.8567, 
+    address: 'Shivajinagar, Pune', 
     phone: '9829012345',
-    rating: 4.5,
-    reviews: 450,
-    image: 'https://images.unsplash.com/photo-1595009552535-be753427d05f?auto=format&fit=crop&q=80&w=400',
-    description: 'Specialized in multi-brand agri inputs and advisory services across Rajasthan.',
-    products: ['Agri Inputs', 'Advisory', 'Seeds'],
-    hours: '9:00 AM - 6:00 PM',
+    rating: 4.8,
+    reviews: 120,
+    image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=400',
+    description: 'Premier rental service for modern tractors and sowing machinery in the Pune district.',
+    products: ['Mahindra Tractor (₹1200/day)', 'Sowing Machine (₹800/day)', 'Rotary Tiller (₹600/day)'],
+    hours: '8:00 AM - 7:00 PM',
     delivery: true
   },
   { 
     id: 2, 
-    name: 'Infinite Biotech', 
-    lat: 23.0225, 
-    lng: 72.5714, 
-    address: 'Ahmedabad, Gujarat 380051', 
+    name: 'Mumbai Logistics & Rentals', 
+    lat: 19.0760, 
+    lng: 72.8777, 
+    address: 'Bandra, Mumbai', 
     phone: '9909012345',
-    rating: 4.7,
-    reviews: 320,
-    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&q=80&w=400',
-    description: 'Leading producer of high-quality bio products and specialized fertilizers for sustainable growth.',
-    products: ['Bio Products', 'Bio Fertilizers', 'Growth Promoters'],
-    hours: '8:00 AM - 8:00 PM',
+    rating: 4.6,
+    reviews: 85,
+    image: 'https://images.unsplash.com/photo-1586191128574-32354aa3da71?auto=format&fit=crop&q=80&w=400',
+    description: 'Reliable transport vehicles for crop logistics. Trucks and mini-trucks available for daily hire.',
+    products: ['Tata Ace (₹1500/day)', '407 Truck (₹3000/day)', 'Pick-up Van (₹1200/day)'],
+    hours: '24/7 Service',
     delivery: true
   },
   { 
     id: 3, 
-    name: 'Bhoomi Agro Company', 
-    lat: 16.8302, 
-    lng: 75.7100, 
-    address: 'Vijayapur, Karnataka 586101', 
+    name: 'Nagpur Harvester Experts', 
+    lat: 21.1458, 
+    lng: 79.0882, 
+    address: 'Sitabuldi, Nagpur', 
     phone: '9448012345',
-    rating: 4.3,
-    reviews: 180,
-    image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=400',
-    description: 'Trusted seeds and agri-machinery supplier serving the Karnataka farming belt.',
-    products: ['Hybrid Seeds', 'Agri Tools', 'Tractors'],
-    hours: '9:30 AM - 7:30 PM',
+    rating: 4.9,
+    reviews: 156,
+    image: 'https://images.unsplash.com/photo-1599908611100-3490b497c23a?auto=format&fit=crop&q=80&w=400',
+    description: 'Expert combine harvesters and threshers for large scale farming operations.',
+    products: ['Combine Harvester (₹2500/hr)', 'Seed Thresher (₹1200/day)', 'Power Tiller (₹1000/day)'],
+    hours: '6:00 AM - 6:00 PM',
     delivery: false
   },
   { 
     id: 4, 
-    name: 'IFFCO', 
-    lat: 28.6139, 
-    lng: 77.2090, 
-    address: 'Nationwide (HQ: New Delhi)', 
-    phone: '18001031967',
-    rating: 4.9,
-    reviews: 5000,
-    image: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&q=80&w=400',
-    description: 'World\'s largest cooperative society providing affordable and high-quality fertilizers nationwide.',
-    products: ['Urea', 'DAP', 'NPK Fertilizers'],
-    hours: '10:00 AM - 5:00 PM',
+    name: 'Baramati Equipment Rental', 
+    lat: 18.1506, 
+    lng: 74.5771, 
+    address: 'MIDC, Baramati', 
+    phone: '9846054321',
+    rating: 4.5,
+    reviews: 90,
+    image: 'https://images.unsplash.com/photo-1595009552535-be753427d05f?auto=format&fit=crop&q=80&w=400',
+    description: 'Affordable manual and battery-operated equipment for small-scale farmers in Maharashtra.',
+    products: ['Manual Seeder (₹200/day)', 'Battery Sprayer (₹150/day)', 'Hand Weeder (₹50/day)'],
+    hours: '9:00 AM - 6:00 PM',
     delivery: true
   },
   { 
     id: 5, 
-    name: 'Coromandel International', 
-    lat: 17.4447, 
-    lng: 78.4664, 
-    address: 'Nationwide (HQ: Hyderabad)', 
-    phone: '18004252828',
-    rating: 4.6,
-    reviews: 2100,
-    image: 'https://images.unsplash.com/photo-1628352081506-83c43143ed6d?auto=format&fit=crop&q=80&w=400',
-    description: 'India\'s leading provider of fertilizers, crop protection chemicals, and specialty nutrients.',
-    products: ['Phosphatic Fertilizers', 'Pesticides', 'Organic Nutrients'],
-    hours: '9:00 AM - 6:30 PM',
+    name: 'Nashik Grape Equipment', 
+    lat: 19.9975, 
+    lng: 73.7898, 
+    address: 'Panchavati, Nashik', 
+    phone: '9765412345',
+    rating: 4.7,
+    reviews: 65,
+    image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=400',
+    description: 'Specialized sprayers and pruning equipment for grape and onion farmers.',
+    products: ['Power Sprayer (₹400/day)', 'Tractor-mounted Sprayer (₹1000/day)', 'Pruning Tools (₹100/day)'],
+    hours: '7:30 AM - 8:00 PM',
     delivery: true
   },
   { 
     id: 6, 
-    name: 'UPL Limited', 
-    lat: 19.0760, 
-    lng: 72.8777, 
-    address: 'Nationwide (HQ: Mumbai)', 
-    phone: '2271528000',
-    rating: 4.8,
-    reviews: 3500,
-    image: 'https://images.unsplash.com/photo-1532187863486-abf9bdad1b69?auto=format&fit=crop&q=80&w=400',
-    description: 'Global leader in sustainable agriculture providing advanced agrochemicals and crop solutions.',
-    products: ['Agrochemicals', 'Pesticides', 'Post-harvest Solutions'],
+    name: 'Kolhapur Heavy Agri', 
+    lat: 16.7050, 
+    lng: 74.2433, 
+    address: 'Udyog Nagar, Kolhapur', 
+    phone: '9881122334',
+    rating: 4.9,
+    reviews: 210,
+    image: 'https://images.unsplash.com/photo-1599908611100-3490b497c23a?auto=format&fit=crop&q=80&w=400',
+    description: 'Heavy machinery rentals for large scale sugarcane plantation and industrial farming.',
+    products: ['Heavy Harvester (₹3000/hr)', 'Sugar Load Truck (₹4000/day)', 'Land Leveler (₹1500/day)'],
+    hours: '6:00 AM - 10:00 PM',
+    delivery: false
+  },
+  { 
+    id: 7, 
+    name: 'Satara Rental Hub', 
+    lat: 17.6805, 
+    lng: 73.9911, 
+    address: 'Powai Naka, Satara', 
+    phone: '9123456789',
+    rating: 4.6,
+    reviews: 54,
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&q=80&w=400',
+    description: 'General purpose farm equipment rentals for hilly terrain and small farms.',
+    products: ['Mini Tractor (₹900/day)', 'Power Tiller (₹800/day)', 'Brush Cutter (₹300/day)'],
     hours: '8:00 AM - 6:00 PM',
     delivery: true
   },
   { 
-    id: 7, 
-    name: 'Greenery Agri Center', 
-    lat: 10.0528, 
-    lng: 76.3305, 
-    address: 'Kalamassery, Kerala', 
-    phone: '9846054321',
+    id: 8, 
+    name: 'Sambhajinagar Rental Co.', 
+    lat: 19.8762, 
+    lng: 75.3433, 
+    address: 'Cidco, Aurangabad', 
+    phone: '9000100020',
     rating: 4.4,
-    reviews: 210,
-    image: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&q=80&w=400',
-    description: 'Specialized pesticides and expert advice for intensive farming in the Kerala region.',
-    products: ['Intensive Pesticides', 'Bio-fertilizers', 'Farm Consultation'],
-    hours: '8:30 AM - 5:30 PM',
+    reviews: 78,
+    image: 'https://images.unsplash.com/photo-1586191128574-32354aa3da71?auto=format&fit=crop&q=80&w=400',
+    description: 'Providing tractors and water tankers for drought-prone regions and row crops.',
+    products: ['Water Tanker 5000L (₹1200/trip)', 'Mahindra Jivo (₹1000/day)', 'Seed Drill (₹500/day)'],
+    hours: '7:00 AM - 9:00 PM',
     delivery: true
   },
 ];
@@ -129,7 +144,7 @@ export default function SuppliersMap() {
   const position: [number, number] = [20.5937, 78.9629];
 
   const handleWhatsAppOrder = (phone: string, shopName: string) => {
-    const text = `Hello ${shopName},\nI would like to place an order for agricultural supplies.`;
+    const text = `Hello ${shopName},\nI would like to inquire about renting agricultural equipment (Machinery Info: ${selectedShop?.products.join(', ') || 'Various'}).`;
     const url = `https://wa.me/91${phone}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
   };
@@ -139,9 +154,9 @@ export default function SuppliersMap() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <MapPin size={24} className="text-primary" /> Suppliers Map
+            <Package size={24} className="text-primary" /> Equipment Rental
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm">Agri-shops within a 5km radius of your location.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">Rent tractors, trucks, and sowing machines within a 5km radius.</p>
         </div>
       </div>
 
@@ -168,7 +183,7 @@ export default function SuppliersMap() {
                     onClick={() => handleWhatsAppOrder(shop.phone, shop.name)}
                     className="mt-3 flex items-center justify-center gap-1 w-full py-1.5 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm"
                   >
-                    <ShoppingCart size={14} /> WhatsApp Order
+                    <Phone size={14} /> Contact for Rental
                   </button>
                 </div>
               </Popup>
@@ -180,7 +195,7 @@ export default function SuppliersMap() {
       {/* Info Card */}
       <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center gap-4 text-xs font-medium text-slate-600 dark:text-slate-300">
         <MapPin size={16} className="text-primary" />
-        <span>Select a supplier below or tap a marker for detailed information.</span>
+        <span>Select a rental service below or tap a marker for equipment and rates.</span>
       </div>
 
       {/* Supplier Grid */}
@@ -230,7 +245,7 @@ export default function SuppliersMap() {
                   onClick={() => handleWhatsAppOrder(shop.phone, shop.name)}
                   className="flex-1 py-2 px-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl text-sm shadow-sm transition-colors flex items-center justify-center gap-2"
                 >
-                  <ShoppingCart size={16} /> Order
+                  <Phone size={16} /> Rent Now
                 </button>
               </div>
             </div>
@@ -317,7 +332,7 @@ export default function SuppliersMap() {
                   onClick={() => handleWhatsAppOrder(selectedShop.phone, selectedShop.name)}
                   className="flex-[2] py-3 px-6 bg-green-500 hover:bg-green-600 text-white font-bold rounded-2xl shadow-lg shadow-green-200 dark:shadow-none transition-colors flex items-center justify-center gap-2"
                 >
-                  <ShoppingCart size={20} /> Place Order via WhatsApp
+                  <Phone size={20} /> Inquire for Rental
                 </button>
               </div>
             </div>

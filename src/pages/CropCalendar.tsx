@@ -6,24 +6,24 @@ import { getCalendar } from '../lib/api';
 
 // Mock events data with district mapping
 const districtEvents: Record<string, any[]> = {
-  Ernakulam: [
-    { title: '🌾 Sowing: Paddy (Mundakan)', start: '2026-03-20', end: '2026-03-25', backgroundColor: '#10b981', borderColor: '#059669' },
-    { title: '🚜 Harvesting: Tapioca', start: '2026-03-25', backgroundColor: '#f59e0b', borderColor: '#d97706' },
-    { title: '💧 Irrigation: Coconut', start: '2026-03-18', backgroundColor: '#3b82f6', borderColor: '#2563eb' },
+  Pune: [
+    { title: '🌱 Sowing: Sugarcane', start: '2026-03-20', end: '2026-03-25', backgroundColor: '#10b981', borderColor: '#059669' },
+    { title: '🚜 Harvesting: Cotton', start: '2026-03-25', backgroundColor: '#f59e0b', borderColor: '#d97706' },
+    { title: '💧 Irrigation: Sugarcane', start: '2026-03-18', backgroundColor: '#3b82f6', borderColor: '#2563eb' },
   ],
-  Thrissur: [
-    { title: '🌾 Sowing: Paddy (Mundakan)', start: '2026-03-22', end: '2026-03-27', backgroundColor: '#10b981', borderColor: '#059669' },
-    { title: '🍌 Sowing: Banana', start: '2026-03-28', backgroundColor: '#10b981', borderColor: '#059669' },
+  Ahmednagar: [
+    { title: '🌱 Sowing: Jowar', start: '2026-03-22', end: '2026-03-27', backgroundColor: '#10b981', borderColor: '#059669' },
+    { title: '🌾 Sowing: Wheat', start: '2026-03-28', backgroundColor: '#10b981', borderColor: '#059669' },
     { title: '🧴 Pesticide application', start: '2026-03-19', backgroundColor: '#ef4444', borderColor: '#dc2626' },
   ],
-  Palakkad: [
-    { title: '🌾 Harvesting: Paddy (Puncha)', start: '2026-03-15', end: '2026-03-20', backgroundColor: '#f59e0b', borderColor: '#d97706' },
+  Nagpur: [
+    { title: '🍊 Harvesting: Oranges', start: '2026-03-15', end: '2026-03-20', backgroundColor: '#f59e0b', borderColor: '#d97706' },
     { title: '🪱 Soil Testing', start: '2026-03-24', backgroundColor: '#8b5cf6', borderColor: '#7c3aed' },
   ],
 };
 
 export default function CropCalendar() {
-  const [selectedDistrict, setSelectedDistrict] = useState('Ernakulam');
+  const [selectedDistrict, setSelectedDistrict] = useState('Pune');
   const [events, setEvents] = useState(districtEvents[selectedDistrict]);
 
   useEffect(() => {
@@ -70,9 +70,9 @@ export default function CropCalendar() {
             onChange={handleDistrictChange}
             className="bg-transparent text-sm font-medium text-slate-700 dark:text-slate-200 outline-none cursor-pointer"
           >
-            <option value="Ernakulam">Ernakulam</option>
-            <option value="Thrissur">Thrissur</option>
-            <option value="Palakkad">Palakkad</option>
+            <option value="Pune">Pune</option>
+            <option value="Ahmednagar">Ahmednagar</option>
+            <option value="Nagpur">Nagpur</option>
           </select>
         </div>
       </div>

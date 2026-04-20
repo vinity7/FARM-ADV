@@ -1,12 +1,11 @@
 # Farm Advisory Dashboard (Integrated)
 
-A full-stack agricultural advisor application for farmers in Kerala, featuring real-time market prices, AI-driven crop diagnosis (Groq Llama-3), and integrated crop calendars.
+A full-stack agricultural advisor application for farmers in Maharashtra, featuring AI-driven crop diagnosis (Groq Llama-3), integrated crop calendars, and financial tracking.
 
 ## Core Features
-- **Live Mandi Prices**: Real-time price updates via Socket.io.
-- **AI Farm Advisor**: Assistant for crop diagnosis and advice in Malayalam (supports Image & Voice).
-- **Crop Calendar**: Seasonal schedules for Paddy, Coconut, Banana, and more, tailored to Kerala districts.
-- **Unified Dashboard**: Personalized overview of weather, prices, and tasks.
+- **AI Farm Advisor**: Assistant for crop diagnosis and advice in multiple languages including Marathi/Hindi (supports Image & Voice).
+- **Crop Calendar**: Seasonal schedules for Sugarcane, Cotton, Jowar, and more, tailored to Maharashtra districts.
+- **Unified Dashboard**: Personalized overview of weather and tasks.
 
 ## Tech Stack
 - **Frontend**: React, Vite, TypeScript, TailwindCSS, Lucide Icons, FullCalendar, Recharts.
