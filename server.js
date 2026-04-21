@@ -40,6 +40,7 @@ app.use('/api/query', require('./routes/query'));
 app.use('/api/prices', require('./routes/market'));
 app.use('/api/ledger', require('./routes/ledger'));
 app.use('/api/scan', require('./routes/scan'));
+app.use('/api/weather', require('./routes/weather'));
 
 // Serve Static Assets in Production
 if (process.env.NODE_ENV === 'production') {

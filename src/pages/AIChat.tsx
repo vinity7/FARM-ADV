@@ -34,8 +34,8 @@ export default function AIChat() {
       // Initial welcome message
       const userLang = storedUser.language || 'english';
       const welcomeText = userLang === 'hindi' 
-        ? `नमस्ते ${storedUser.name || 'किसान'}! मैं Farm-Ed AI हूँ, आपका कृषि सलाहकार। आप ${storedUser.district || 'भारत'}, ${storedUser.state || ''} से हैं। मैं आपकी कैसे मदद कर सकता हूँ?`
-        : `Hello ${storedUser.name || 'Farmer'}! I am Farm-Ed AI, your agricultural advisor from ${storedUser.district || 'India'}, ${storedUser.state || ''}. How can I assist you today?`;
+        ? `नमस्ते ${storedUser.name || 'किसान'}! मैं KISANKART AI हूँ, आपका कृषि सलाहकार। आप ${storedUser.district || 'भारत'}, ${storedUser.state || ''} से हैं। मैं आपकी कैसे मदद कर सकता हूँ?`
+        : `Hello ${storedUser.name || 'Farmer'}! I am KISANKART AI, your agricultural advisor from ${storedUser.district || 'India'}, ${storedUser.state || ''}. How can I assist you today?`;
         
       setMessages([
         {
@@ -166,7 +166,7 @@ export default function AIChat() {
       {/* Header */}
       <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50">
         <div className="flex-1">
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">AI Farm Advisor</h1>
+          <h1 className="text-lg font-bold text-slate-900 dark:text-white">KISANKART AI Advisor</h1>
           <p className="text-xs text-slate-500 dark:text-slate-400">Online | Supports Voice & Image</p>
         </div>
         <button 

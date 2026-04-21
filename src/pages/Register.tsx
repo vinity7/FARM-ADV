@@ -53,9 +53,8 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 px-4">
       <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-slate-200 dark:border-slate-700">
         <div className="text-center mb-8">
-          <Link to="/" className="text-3xl font-bold text-primary">🌱 Farm-Ed</Link>
-          <h2 className="text-xl font-semibold mt-4 text-slate-900 dark:text-white">Create Account</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm">Join the farming community</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Join KISANKART Today</h1>
+          <p className="text-slate-500 dark:text-slate-400 mt-2">Create your account to get personalized farm advice</p>
         </div>
 
         <form className="space-y-4" onSubmit={formik.handleSubmit}>

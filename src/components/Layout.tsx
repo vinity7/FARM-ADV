@@ -44,7 +44,7 @@ export default function Layout({ children }: LayoutProps) {
       <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700">
         <div className="p-6 flex items-center justify-between">
           <Link to="/" className="text-xl font-bold text-primary flex items-center gap-2">
-            <span className="text-2xl">🌱</span> Farm-Ed
+            <span className="text-2xl">🌱</span> KISANKART
           </Link>
           <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -75,7 +75,7 @@ export default function Layout({ children }: LayoutProps) {
         {/* Top bar (mobile) */}
         <header className="md:hidden flex items-center justify-between p-4 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
           <Link to="/" className="text-xl font-bold text-primary flex items-center gap-2">
-            🌱 Farm-Ed
+            🌱 KISANKART
           </Link>
           <button onClick={toggleTheme} className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}

@@ -1,4 +1,4 @@
-# Farm Advisory Dashboard (Integrated)
+# KISANKART - Maharashtra's AI Farm Hub
 
 A full-stack agricultural advisor application for farmers in Maharashtra, featuring AI-driven crop diagnosis (Groq Llama-3), integrated crop calendars, and financial tracking.
 
