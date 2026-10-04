@@ -9,9 +9,21 @@ exports.getQueryAdvice = async (req, res) => {
     const imageUrl = req.file ? req.file.path : null;
 
     try {
-        const user = req.user;
+        const user = req.user || { language: 'english', name: 'Farmer', district: 'Unknown', state: 'India' };
         const language = user.language === 'hindi' ? 'Hindi' : 'English';
         
+        const modelName = imageUrl ? "llama-3.2-11b-vision-preview" : "llama-3.3-70b-versatile";
+
+        let userContent;
+        if (imageUrl) {
+            userContent = [
+                { type: "text", text: `Question: ${question}.` },
+                { type: "image_url", image_url: { url: imageUrl } }
+            ];
+        } else {
+            userContent = `Question: ${question}.`;
+        }
+
         const messages = [
             {
                 role: "system",
@@ -23,15 +35,12 @@ exports.getQueryAdvice = async (req, res) => {
             },
             {
                 role: "user",
-                content: [
-                    { type: "text", text: `Question: ${question}.` },
-                    ...(imageUrl ? [{ type: "image_url", image_url: { url: imageUrl } }] : [])
-                ]
+                content: userContent
             }
         ];
 
         const response = await groq.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
+            model: modelName,
             messages: messages,
             max_tokens: 500,
         });

@@ -9,6 +9,7 @@ import AIChat from './pages/AIChat';
 import Ledger from './pages/Ledger';
 import SuppliersMap from './pages/SuppliersMap';
 import Profile from './pages/Profile';
+import CropRecommender from './pages/CropRecommender';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -91,6 +92,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <Profile />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ml-recommender"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <CropRecommender />
               </Layout>
             </ProtectedRoute>
           }

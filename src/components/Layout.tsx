@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { LayoutDashboard, TrendingUp, MessageSquare, MapPin, User, Sun, Moon } from 'lucide-react';
+import { LayoutDashboard, TrendingUp, MessageSquare, MapPin, User, Sun, Moon, Sprout } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface LayoutProps {
@@ -34,6 +34,7 @@ export default function Layout({ children }: LayoutProps) {
     { to: '/dashboard', icon: <LayoutDashboard size={24} />, label: 'Dashboard' },
     { to: '/market-prices', icon: <TrendingUp size={24} />, label: 'Market' },
     { to: '/ai-chat', icon: <MessageSquare size={24} />, label: 'AI Chat' },
+    { to: '/ml-recommender', icon: <Sprout size={24} />, label: 'ML Predict' },
     { to: '/ledger', icon: <TrendingUp size={24} />, label: 'Ledger' },
     { to: '/suppliers', icon: <MapPin size={24} />, label: 'Suppliers' },
     { to: '/profile', icon: <User size={24} />, label: 'Profile' },
